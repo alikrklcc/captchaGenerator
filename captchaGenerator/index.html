@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Captcha Generator</title>
+
+<style>
+
+
+
+
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right,#5b1de0,#84c4b0);
+    overflow: hidden;
+}
+
+
+.captchaDiv{
+background: linear-gradient(to right,#cb6b44,#98209b);
+width: 300px;
+height: 300px;
+text-align: center;
+border: 1px solid black;
+border-radius: 15px;
+box-shadow: 0px 8px 20px black;
+
+}
+
+
+
+#text{
+    width: 100px;
+    transition:0.5s ease;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    padding: 5px;
+}
+
+#text:focus{
+    width: 120px;
+    border: 3px solid green;
+}
+
+
+#btn{
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    
+}
+
+
+#captcha{
+    font-size: 1.6rem;
+}
+
+
+</style>
+
+
+
+
+
+</head>
+<body>
+
+
+<div class="captchaDiv" id="captchaDiv">
+
+<h3 id="captcha">Captcha = </h3>
+<input type="text" placeholder="enter the captcha" id="text">
+<button type="submit" value="Send" id="btn">Send</button>
+<h3 id="kontrol"></h3>
+
+
+<button id="sifreDegistir">New Captcha</button>
+</div>
+
+<script>
+let captcha=document.getElementById("captcha");
+let btn=document.getElementById("btn");
+let text=document.getElementById("text");
+let kontrol=document.getElementById("kontrol");
+let sifreDegistir=document.getElementById("sifreDegistir");
+let captchaDiv=document.getElementById("captchaDiv");
+let clickCounter=0;
+let denemeSayaci=0;
+let sifrem="";
+function captchas(){
+
+    const captchaArray=[
+1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f","!","*",
+"A","B","C","D","E","F"
+
+];
+
+
+for (let i=0;i<6;i++){
+sifrem=sifrem+captchaArray[Math.floor(Math.random()*captchaArray.length)];
+
+
+
+}
+return sifrem;
+}
+captchas();
+
+text.value="";
+captcha.innerHTML=`Captcha = ${sifrem}`;
+captcha.style.userSelect="none";
+btn.addEventListener("click", ()=>{
+
+
+if(text.value==sifrem){
+
+kontrol.innerHTML="Login successful"
+kontrol.style.color="green";
+sifreDegistir.style.display="none";
+}
+else{
+    denemeSayaci++;
+    kontrol.innerHTML="Login Failed"+" "+denemeSayaci;
+    kontrol.style.color="red";
+    if(denemeSayaci==3){
+        btn.disabled=true;
+        captcha.innerHTML="Try Again Later";
+    }
+}
+
+
+})
+sifreDegistir.addEventListener("click", ()=>{
+clickCounter++;
+sifrem="";
+captchas();
+captcha.innerHTML=`Captcha = ${sifrem}`;
+if (clickCounter==3){
+sifreDegistir.disabled=true;
+let uyari=document.createElement("h4");
+uyari.classList.add("uyari")
+captchaDiv.appendChild(uyari);
+uyari.setAttribute("style", "color:red");
+
+uyari.innerHTML="No More Captcha, Refresh Page";
+}
+
+})
+
+
+</script>
+
+
+
+
+    
+</body>
+</html>
